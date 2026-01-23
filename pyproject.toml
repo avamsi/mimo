@@ -3,9 +3,8 @@ name = "mimo"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "marimo[mcp]>=0.19.4",
+    "marimo[mcp,recommended]>=0.19.4",
     "plotly[express]>=6.5.2",
-    "polars>=1.37.1",
 ]
 
 [tool.marimo]
