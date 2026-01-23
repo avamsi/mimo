@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
     "marimo[mcp,recommended]>=0.19.4",
+    "pip-system-certs>=5.3",
     "plotly[express]>=6.5.2",
 ]
 
