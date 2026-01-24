@@ -7,8 +7,3 @@ dependencies = [
     "pip-system-certs>=5.3",
     "plotly[express]>=6.5.2",
 ]
-
-[tool.marimo]
-completion.copilot = "codeium"
-display.default_width = "full"
-runtime.watcher_on_save = "autorun"
