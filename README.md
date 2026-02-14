@@ -1,3 +1,3 @@
 ```
-$ uv run marimo edit --port 6573 --no-token --watch --mcp
+$ uvx git+https://github.com/avamsi/mimo
 ```

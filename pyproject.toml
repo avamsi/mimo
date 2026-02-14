@@ -7,3 +7,9 @@ dependencies = [
     "pip-system-certs>=5.3",
     "plotly[express]>=6.5.2",
 ]
+
+[project.scripts]
+mimo = "mimo:main"
+
+[tool.uv]
+package = true

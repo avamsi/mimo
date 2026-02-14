@@ -1,2 +1,3 @@
+*.egg-info/
 __marimo__/
 __pycache__/

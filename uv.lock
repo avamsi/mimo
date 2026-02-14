@@ -758,7 +758,7 @@ wheels = [
 [[package]]
 name = "mimo"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "marimo", extra = ["mcp", "recommended"] },
     { name = "pip-system-certs" },
