@@ -2,7 +2,10 @@
   "mcpServers": {
     "marimo": {
       "type": "http",
-      "url": "http://localhost:6573/mcp/server"
+      "url": "http://localhost:6573/mcp/server",
+      "headers": {
+        "Authorization": "Basic dXNlcjpwYXNz"
+      }
     }
   }
 }
