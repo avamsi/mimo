@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+    <head>
+        <title>mimo</title>
+        <style>
+            body {
+                display: flex;
+                height: 100vh;
+                margin: 0;
+            }
+            aside {
+                margin: 1rem 0 0 1rem;
+                overflow: auto;
+                width: 16rem;
+            }
+            .dir > * {
+                margin-left: 1rem;
+            }
+            main {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+            }
+            #container {
+                flex: 1;
+            }
+            iframe {
+                border: none;
+                display: block;
+                height: 100%;
+                width: 100%;
+            }
+            [hidden] {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <aside>
+            Tree <span onclick="newNotebook()">New</span>
+            <div id="tree"></div>
+        </aside>
+        <main>
+            <nav id="tabbar"></nav>
+            <div id="container"></div>
+        </main>
+        <script>
+            const tree = document.getElementById("tree");
+            const container = document.getElementById("container");
+
+            function post(url, body = {}) {
+                return fetch(url, {
+                    method: "POST",
+                    body: JSON.stringify(body),
+                })
+                    .then((r) => r.json())
+                    .catch(alert);
+            }
+
+            function buildTree(files) {
+                return files
+                    .map((f) =>
+                        f.isDirectory
+                            ? `<div class="dir">${f.name}${buildTree(f.children)}</div>`
+                            : `<div class="file" data-path="${f.path}">${f.name}</div>`,
+                    )
+                    .join("");
+            }
+
+            function refreshTree() {
+                return post("/api/home/workspace_files").then(({ files }) => {
+                    tree.innerHTML = buildTree(files);
+                });
+            }
+
+            refreshTree();
+
+            const tabs = new Map();
+
+            function openTab(path) {
+                for (const [tabPath, iframe] of tabs) {
+                    iframe.hidden = tabPath !== path;
+                }
+                if (tabs.has(path)) {
+                    return;
+                }
+                const iframe = document.createElement("iframe");
+                iframe.src = `/?file=${encodeURIComponent(path)}`;
+                container.appendChild(iframe);
+                tabs.set(path, iframe);
+            }
+
+            function newNotebook() {
+                let path = prompt("Notebook relative path:");
+                if (!path) {
+                    return;
+                }
+                if (!path.endsWith(".py")) {
+                    path += ".py";
+                }
+                return post("/api/files/create", {
+                    path: ".",
+                    type: "file",
+                    name: path,
+                    contents: btoa("import marimo; app = marimo.App()"),
+                })
+                    .then(() => refreshTree())
+                    .then(() => openTab(path));
+            }
+
+            tree.addEventListener("click", (e) => {
+                const file = e.target.closest(".file");
+                if (file) {
+                    openTab(file.dataset.path);
+                }
+            });
+        </script>
+    </body>
+</html>

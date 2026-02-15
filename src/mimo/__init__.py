@@ -1,4 +1,5 @@
 from base64 import b64encode
+from importlib import resources
 from os import environ
 
 from marimo._server import file_router, registry, start, tokens
@@ -7,6 +8,8 @@ from starlette import middleware, responses, types
 
 
 class MimoMiddleware:
+    LAB_HTML = resources.files(__package__).joinpath("lab.html").read_bytes()
+
     def __init__(self, app: types.ASGIApp, username: str, password: str):
         self._app = app
         self._credentials = b"Basic " + b64encode(f"{username}:{password}".encode())
@@ -19,8 +22,14 @@ class MimoMiddleware:
             and dict(scope["headers"]).get(b"authorization") != self._credentials
         ):
             return await responses.Response(
-                None, status_code=401, headers={"WWW-Authenticate": "Basic"}
+                status_code=401, headers={"WWW-Authenticate": "Basic"}
             )(scope, receive, send)
+        if (
+            scope["type"] == "http"
+            and scope["path"] == "/"
+            and not scope.get("query_string")
+        ):
+            return await responses.HTMLResponse(self.LAB_HTML)(scope, receive, send)
         return await self._app(scope, receive, send)
 
 
