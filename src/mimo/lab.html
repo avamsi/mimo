@@ -2,47 +2,24 @@
 <html>
     <head>
         <title>mimo</title>
-        <style>
-            body {
-                display: flex;
-                height: 100vh;
-                margin: 0;
-            }
-            aside {
-                margin: 1rem 0 0 1rem;
-                overflow: auto;
-                width: 16rem;
-            }
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style type="text/tailwindcss">
             .dir > * {
-                margin-left: 1rem;
-            }
-            main {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-            }
-            #container {
-                flex: 1;
+                @apply ml-4;
             }
             iframe {
-                border: none;
-                display: block;
-                height: 100%;
-                width: 100%;
-            }
-            [hidden] {
-                display: none;
+                @apply h-full w-full;
             }
         </style>
     </head>
-    <body>
-        <aside>
+    <body class="flex h-screen">
+        <aside class="ml-4 mt-4 overflow-auto w-64">
             Tree <span onclick="newNotebook()">New</span>
             <div id="tree"></div>
         </aside>
-        <main>
+        <main class="flex flex-1 flex-col">
             <nav id="tabbar"></nav>
-            <div id="container"></div>
+            <div id="container" class="flex-1"></div>
         </main>
         <script>
             const tree = document.getElementById("tree");
