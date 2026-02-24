@@ -18,7 +18,9 @@
                 class="border-b border-slate-200 flex [font-variant:small-caps] justify-between mb-2 pb-2"
             >
                 Tree
-                <span onclick="newNotebook()">New</span>
+                <button class="[font-variant:inherit]" onclick="newNotebook()">
+                    New
+                </button>
             </header>
             <div id="tree"></div>
         </aside>
@@ -44,7 +46,7 @@
                     .map((f) =>
                         f.isDirectory
                             ? `<div class="dir">${f.name}${buildTree(f.children)}</div>`
-                            : `<div class="file" data-path="${f.path}">${f.name}</div>`,
+                            : `<div class="cursor-pointer file" data-path="${f.path}">${f.name}</div>`,
                     )
                     .join("");
             }
