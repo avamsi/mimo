@@ -5,7 +5,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <style type="text/tailwindcss">
             .dir > * {
-                @apply ml-4;
+                @apply border-l border-slate-200 pl-4;
             }
             iframe {
                 @apply h-full w-full;
@@ -13,7 +13,7 @@
         </style>
     </head>
     <body class="flex h-screen">
-        <aside class="border-r border-slate-200 overflow-auto p-4 w-64">
+        <aside class="border-r border-slate-200 overflow-auto p-4 text-sm w-64">
             <header
                 class="border-b border-slate-200 flex [font-variant:small-caps] justify-between mb-2 pb-2"
             >
@@ -22,7 +22,7 @@
                     New
                 </button>
             </header>
-            <div id="tree"></div>
+            <div id="tree" class="font-mono"></div>
         </aside>
         <main class="flex flex-1 flex-col">
             <nav id="tabbar"></nav>
@@ -45,8 +45,8 @@
                 return files
                     .map((f) =>
                         f.isDirectory
-                            ? `<div class="dir">${f.name}${buildTree(f.children)}</div>`
-                            : `<div class="cursor-pointer file" data-path="${f.path}">${f.name}</div>`,
+                            ? `<div class="dir">+ ${f.name}${buildTree(f.children)}</div>`
+                            : `<div class="cursor-pointer file" data-path="${f.path}">- ${f.name}</div>`,
                     )
                     .join("");
             }
