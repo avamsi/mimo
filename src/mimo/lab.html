@@ -70,6 +70,23 @@
                 }
                 const iframe = document.createElement("iframe");
                 iframe.src = `/?file=${encodeURIComponent(path)}`;
+                iframe.onload = () =>
+                    iframe.contentDocument.head.insertAdjacentHTML(
+                        "beforeend",
+                        `
+                        <style>
+                            :has(> #app-chrome-sidebar) {
+                                direction: rtl;
+                            }
+                            :has(> #app-chrome-sidebar) > * {
+                                direction: ltr;
+                            }
+                            #app-chrome-sidebar > * {
+                                flex-direction: row-reverse;
+                            }
+                        </style>
+                        `,
+                    );
                 container.appendChild(iframe);
                 tabs.set(path, iframe);
             }
